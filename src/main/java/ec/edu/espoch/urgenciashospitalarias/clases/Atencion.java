@@ -44,14 +44,20 @@ public class Atencion {
     
     public boolean cambiarEstado(EstadoAtencion nuevoEstado){
         boolean respuesta=false;
-        if(nuevoEstado==EstadoAtencion.ALTA_EMITIDA){
-           if(this.estadoAtencion==EstadoAtencion.LISTA_PARA_ALTA){
-               this.estadoAtencion=nuevoEstado;
-               respuesta=true;
-           }
-        } else{
+        if (this.estadoAtencion==EstadoAtencion.REGISTRADA && nuevoEstado==EstadoAtencion.EN_TRIAJE) {
             this.estadoAtencion=nuevoEstado;
             respuesta=true;
+        } else if (this.estadoAtencion==EstadoAtencion.EN_TRIAJE && nuevoEstado==EstadoAtencion.EN_ATENCION) {
+            this.estadoAtencion=nuevoEstado;
+            respuesta=true;
+        } else if (this.estadoAtencion==EstadoAtencion.EN_ATENCION && nuevoEstado==EstadoAtencion.LISTA_PARA_ALTA) {
+            this.estadoAtencion=nuevoEstado;
+            respuesta=true;
+        } else if (this.estadoAtencion==EstadoAtencion.LISTA_PARA_ALTA && nuevoEstado==EstadoAtencion.ALTA_EMITIDA) {
+            this.estadoAtencion=nuevoEstado;
+            respuesta=true;
+        } else{
+            System.out.println("El cambio de estado debe seguir el orden REGISTADA-EN TRIAJE-EN ATENCION-LISTA PARA ALTA-ALTA EMITIDA.");
         }
         return respuesta;
     }
@@ -90,6 +96,9 @@ public class Atencion {
             if (insumos[i]==null){
                 this.insumos[i]=insumo;
                 respuesta=true;
+                if (this.insumos[i]==insumo){
+                    this.insumos[i+1]="N/A";
+                }
             }
         }
         return respuesta;
@@ -124,6 +133,7 @@ public class Atencion {
     public boolean cancelarAtencion(String motivo){
         boolean respuesta=false;
         if(this.estadoAtencion==EstadoAtencion.REGISTRADA || this.estadoAtencion==EstadoAtencion.EN_TRIAJE){
+            this.estadoAtencion=EstadoAtencion.CANCELADA;
             this.motivoCancelacion=motivo;
             respuesta=true;
         }
@@ -147,7 +157,7 @@ public class Atencion {
 
     @Override
     public String toString() {
-        return "Atencion{" + "idAtencion=" + idAtencion + ", estadoAtencion=" + estadoAtencion + ", procedimientos=" + procedimientos[0].tipoProcedimiento + ", prioridad=" + prioridad + ", observacion=" + observacion + ", indicacion=" + indicacion + ", medicacion=" + medicacion + ", insumos=" + insumos[0] + ", motivoCancelacion=" + motivoCancelacion + ", total=" + total + '}';
+        return "Atencion{" + "idAtencion=" + idAtencion + ", estadoAtencion=" + estadoAtencion + ", procedimientos=" + procedimientos[1].tipoProcedimiento + ", prioridad=" + prioridad + ", observacion=" + observacion + ", indicacion=" + indicacion + ", medicacion=" + medicacion + ", insumos=" + insumos[1] + ", motivoCancelacion=" + motivoCancelacion + ", total=" + total + '}';
     }
     
    
