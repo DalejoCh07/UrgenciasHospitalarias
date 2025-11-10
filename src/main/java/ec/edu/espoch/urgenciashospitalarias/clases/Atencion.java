@@ -9,14 +9,18 @@ public class Atencion {
     //Atributos
     public int idAtencion;
     public EstadoAtencion estadoAtencion;
-    public Procedimiento[] procedimientos=new Procedimiento[3];
+    public Procedimiento[] procedimientos=new Procedimiento[2];
     public TipoPrioridad prioridad;
+    public String observacion;
+    public String indicacion;
+    public String medicacion;
+    public String[] insumos= new String[2];
     public String motivoCancelacion;
     public double total;
     
     //Costructores
-    public Atencion(EstadoAtencion estadoAtencion) {
-        this.idAtencion = idAtencion++;
+    public Atencion(int idAtencion, EstadoAtencion estadoAtencion) {
+        this.idAtencion = idAtencion;
         this.estadoAtencion = estadoAtencion;
     }
     
@@ -28,6 +32,14 @@ public class Atencion {
             respuesta=true;
         }
         return respuesta;
+    }
+    
+     public String agregarIndicacion(String indicacion){
+        return this.indicacion=indicacion;
+    }
+    
+    public String añadirObservacion(String observacion){ 
+        return this.observacion=observacion;
     }
     
     public boolean cambiarEstado(EstadoAtencion nuevoEstado){
@@ -72,6 +84,43 @@ public class Atencion {
         return respuesta;
     }
     
+    public boolean agregarInsumo(String insumo){
+        boolean respuesta=false;
+        for(int i=0;i<insumos.length;i++){
+            if (insumos[i]==null){
+                this.insumos[i]=insumo;
+                respuesta=true;
+            }
+        }
+        return respuesta;
+    }
+    
+    public boolean quitarInsumo(String elimInsumo){
+        boolean respuesta=false;
+        for(int i=0;i<insumos.length;i++){
+            if(insumos[i]==elimInsumo){
+                this.insumos[i]=null;
+                respuesta=true;
+            }
+        }
+        return respuesta;
+    }
+    
+    public String ordenarMedicacion(String dosis){
+        return this.medicacion=dosis;
+    }
+    
+    public boolean cambiarMedicacion(String dosisNueva, EstadoAtencion estadoActual){
+        boolean respuesta=false;
+        if(estadoActual!=EstadoAtencion.EN_ATENCION){
+            this.medicacion=dosisNueva;
+            respuesta=true;
+        }else{
+            System.out.println("No se puede cambiar la dosis en estado 'En Atencion'");
+        }
+        return respuesta;
+    }
+    
     public boolean cancelarAtencion(String motivo){
         boolean respuesta=false;
         if(this.estadoAtencion==EstadoAtencion.REGISTRADA || this.estadoAtencion==EstadoAtencion.EN_TRIAJE){
@@ -95,6 +144,11 @@ public class Atencion {
         }
         return total;
     }
-}
-    
 
+    @Override
+    public String toString() {
+        return "Atencion{" + "idAtencion=" + idAtencion + ", estadoAtencion=" + estadoAtencion + ", procedimientos=" + procedimientos[0].tipoProcedimiento + ", prioridad=" + prioridad + ", observacion=" + observacion + ", indicacion=" + indicacion + ", medicacion=" + medicacion + ", insumos=" + insumos[0] + ", motivoCancelacion=" + motivoCancelacion + ", total=" + total + '}';
+    }
+    
+   
+}
